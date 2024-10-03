@@ -1,9 +1,11 @@
 import { XCircleIcon } from "@heroicons/react/16/solid";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useCreateProposal from "../hooks/useCreateProposal";
+import { AppContext } from "../context/AppContext";
 
 const CreateProposalModal = () => {
+    const {isCreatingProposals} = useContext(AppContext)
     const handleCreateProposal = useCreateProposal();
     const [state, setState] = useState({
         description: "",
@@ -12,6 +14,7 @@ const CreateProposalModal = () => {
         deadline: "",
         minVote: 2,
     });
+
 
     const handleInputChange = (name, e) => {
         setState((preState) => ({ ...preState, [name]: e.target.value }));
@@ -120,8 +123,9 @@ const CreateProposalModal = () => {
                                     minVote
                                 )
                             }
+                            disabled={isCreatingProposals}
                         >
-                            Create
+                            {isCreatingProposals ? "..." : "Create"}
                         </button>
                     </div>
                     <Dialog.Close asChild>
