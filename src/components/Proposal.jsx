@@ -6,7 +6,7 @@ import { AppContext } from '../context/AppContext';
 
 const Proposal = ({
     proposal,
-    key
+    
 }) => {
     const date = new Date(Number(proposal.deadline))
 
