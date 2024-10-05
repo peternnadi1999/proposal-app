@@ -141,10 +141,12 @@ const useFetchProposals = () => {
         // })
 
         readOnlyProposalContract.on(votingFilter, getProposals)
+        readOnlyProposalContract.on("ProposalExecuted", getProposals);
 
         return () => {
             readOnlyProposalContract.removeAllListeners(proposalCreationFilter, getProposals);
             readOnlyProposalContract.removeAllListeners(votingFilter, getProposals);
+            readOnlyProposalContract.removeAllListeners("ProposalExecuted", getProposals);
         };
         
       }, [intfce, readOnlyProposalContract]);

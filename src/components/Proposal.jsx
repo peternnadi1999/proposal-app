@@ -1,18 +1,21 @@
 import React, { useContext } from 'react';
 import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import useVoteProposal from '../hooks/useVoteProposal';
+import useExecuteProposal from '../hooks/useExecuteProposal';
 import { formatEther } from 'ethers';
 import { AppContext } from '../context/AppContext';
 
 const Proposal = ({
     proposal,
-    
+    key
 }) => {
     const date = new Date(Number(proposal.deadline))
 
     // const { isLoading } = useVoteProposal();
     const {isLoading} = useContext(AppContext)
     const handleVoteProposal = useVoteProposal();
+
+    const { execute, isExecuting } = useExecuteProposal();
 
     // console.log("PROPOSAL", proposal)
 
@@ -42,8 +45,16 @@ const Proposal = ({
                 <Text>{formatEther(proposal?.amount)} ETH</Text>
             </Flex>
 
+            <Flex>
+                <Text className='text-base font-semibold text-gray-600'>Execute: </Text>
+                <Text>{proposal.executed.toString()}</Text>
+            </Flex>
+
             <Box className='pt-4'>
                 <Button disabled={isLoading} onClick={() => handleVoteProposal(proposal.proposalId)} className='w-full rounded-md bg-white text-bue-400 py-4'>{isLoading ? "...":"Vote"}</Button>
+            </Box>
+            <Box className='pt-4'>
+                <Button disabled={isExecuting} onClick={() => execute(proposal.proposalId)} className='w-full rounded-md bg-green-400 text-white py-4'>{isExecuting ? "...":"Execute"}</Button>
             </Box>
         </Box>
     </Box>
